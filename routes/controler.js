@@ -16,12 +16,20 @@ async function dashboard(req, res) {
 }
 
 //login route
+const express = require("express");
+const app = express();
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+
 async function login(req, res) {
+  console.log(req.body)
   let { username, password } = req.body;
   if (!username || !password) {
+    console.log('error thrown')
     throw new invalidcreds("invalid login details");
   }
-
+  console.log('passed')
   let token = jwt.sign({ username, password }, jwtsecret, {
     expiresIn: "1d",
   });
@@ -30,6 +38,7 @@ async function login(req, res) {
     await usercreds.create({ username, password });
     res.status(200).json({ success: true, token });
   } catch (error) {
+    console.log(`error catched ${error}`)
     throw new internalerror("internal error , please try again");
   }
 }

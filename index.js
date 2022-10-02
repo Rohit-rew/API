@@ -29,7 +29,7 @@ const uri = process.env.URI;
 async function start() {
   try {
     await connectdb(uri);
-    app.listen(5000, console.log("server started"));
+    app.listen(5000, "192.168.1.8" , console.log("server started"));
   } catch (error) {
     throw new Error("Cant connect to server please try again");
   }

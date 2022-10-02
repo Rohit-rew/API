@@ -9,9 +9,9 @@ const authcheck = async (req, res, next) => {
     let token = req.headers;
     let fulltoken = token.authorization;
     if (!fulltoken || !fulltoken.startsWith("Bearer ")) {
-      throw new autherror(
-        "authentication error : please attach bearer token with header"
-      );
+      res
+        .status(200)
+        .json({ success: false, msg: "Please attach bearer token in header" });
     }
 
     let trimedtoken = fulltoken.split(" ")[1];
@@ -26,12 +26,10 @@ const authcheck = async (req, res, next) => {
       req.data = { username, password };
       next();
     } else {
-      throw new Error("token is invalid");
+      res.status(200).json({ success: false, msg: "invalid token" });
     }
   } catch (error) {
-    throw new autherror(
-      "authentication error : please attach bearer token with header"
-    );
+    res.status(200).json({ success: false, msg: "authentication error" });
   }
 };
 
